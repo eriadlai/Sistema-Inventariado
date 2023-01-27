@@ -3,33 +3,30 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { useDispatch } from "react-redux";
-import { createUser } from "../../tools/userSlice";
+import { loginUser } from "../../tools/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 const initialValues = {
-  nombre: "",
   username: "",
   password: "",
-  almacen_id: "",
-  isActive: true,
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const userSchema = yup.object().shape({
-  nombre: yup.string().required("required"),
-  username: yup.string().email("Invalid email").required("required"),
+  email: yup.string().email("Invalid email").required("required"),
   password: yup.string().required("required"),
-  almacen_id: yup.number().required("required"),
 });
 const Form = () => {
   const oDispatch = useDispatch();
+  const oUsuariosList = useSelector((state) => state.usuario);
+  console.log(oUsuariosList);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    oDispatch(createUser(values));
+    console.log(values);
+    oDispatch(loginUser(values));
   };
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="LOGIN" subtitle="Enter your credentials." />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -47,25 +44,11 @@ const Form = () => {
             <Box
               display="grid"
               gap="30px"
-              gridTemplateColumns="repeat(4,minmax(0,1fr))"
+              gridTemplateColumns="repeat(4,minmax(0,2fr))"
               sx={{
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Nombre"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.nombre}
-                name="nombre"
-                error={!!touched.nombre && !!errors.nombre}
-                helperText={touched.nombre && errors.nombre}
-                sx={{ gridColumn: "span 2" }}
-              />
-
               <TextField
                 fullWidth
                 variant="filled"
@@ -77,13 +60,14 @@ const Form = () => {
                 name="username"
                 error={!!touched.username && !!errors.username}
                 helperText={touched.username && errors.username}
-                sx={{ gridColumn: "span 2" }}
+                sx={{ gridColumn: "span 4" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
                 type="password"
-                label="Contraseña"
+                label="Password"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.password}
@@ -92,23 +76,10 @@ const Form = () => {
                 helperText={touched.password && errors.password}
                 sx={{ gridColumn: "span 4" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="Almacen"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.almacen_id}
-                name="almacen_id"
-                error={!!touched.almacen_id && !!errors.almacen_id}
-                helperText={touched.almacen_id && errors.almacen_id}
-                sx={{ gridColumn: "span 4" }}
-              />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create New User
+                Log in
               </Button>
             </Box>
           </form>

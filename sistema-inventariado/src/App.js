@@ -12,6 +12,7 @@ import Bar from "./scenes/bar/index";
 import Form from "./scenes/form/index";
 import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
+import Login from "./scenes/Login";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -34,6 +35,7 @@ function App() {
               <Route path="/form" element={<Form />} />
               <Route path="/pie" element={<Pie />} />
               <Route path="/faq" element={<FAQ />} />
+              <Route path="/login" element={<Login />} />
             </Routes>
           </main>
         </div>
