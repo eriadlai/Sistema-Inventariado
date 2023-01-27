@@ -12,7 +12,7 @@ const initialValues = {
 };
 
 const userSchema = yup.object().shape({
-  email: yup.string().email("Invalid email").required("required"),
+  username: yup.string().email("Invalid email").required("required"),
   password: yup.string().required("required"),
 });
 const Form = () => {

@@ -9,14 +9,14 @@ import { createSlice } from "@reduxjs/toolkit";
  * !     }
  * **/
 const initialState = {
-  isLoged: false,
   user: {
-    id: "1",
-    nombre: "Test Nombre",
-    username: "Test Username",
-    password: "Test password",
-    almacen_id: "2",
+    id: "",
+    nombre: "",
+    username: "",
+    password: "",
+    almacen_id: "",
     isActive: true,
+    isLoged: false,
   },
 };
 
@@ -47,22 +47,43 @@ const userSlice = createSlice({
       //TODO: RutaAPI.post("/UsuarioLogin",{username,password})
       //TODO: Setear usuario activo
       const usuarioActivo = {
-        isLoged: true,
         user: {
           id: "1",
           nombre: "Test Nombre",
-          username: "Test Username",
-          password: "Test password",
+          username: username,
+          password: password,
           almacen_id: "2",
           isActive: true,
+          isLoged: true,
         },
       };
-      state.push(usuarioActivo);
+      return {
+        ...state,
+        user: usuarioActivo,
+      };
       //TODO: Pop Mensaje + Redireccionamiento
+    },
+    logoutUser: (state) => {
+      const usuarioDesactivado = {
+        user: {
+          id: "",
+          nombre: "",
+          username: "",
+          password: "",
+          almacen_id: "",
+          isActive: true,
+          isLoged: false,
+        },
+      };
+      console.log("LOGOUT");
+      return {
+        ...state,
+        user: usuarioDesactivado,
+      };
     },
   },
 });
 
-export const { createUser, updateUser, deleteUser, loginUser } =
+export const { createUser, updateUser, deleteUser, loginUser, logoutUser } =
   userSlice.actions;
 export default userSlice.reducer;
