@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
 import { loginUser } from "../../tools/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const initialValues = {
   username: "",
@@ -17,8 +17,6 @@ const userSchema = yup.object().shape({
 });
 const Form = () => {
   const oDispatch = useDispatch();
-  const oUsuariosList = useSelector((state) => state.usuario);
-  console.log(oUsuariosList);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
     console.log(values);
