@@ -10,8 +10,27 @@ import Header from "../../../components/Header";
 import BarChart from "../../../components/BarChart";
 import StatBox from "../../../components/StatBox";
 import ProgressCircle from "../../../components/ProgressCircle";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
+  const oUsuarios = useSelector((state) => state.usuario);
+  const oRol = useSelector((state) => state.rol);
+  const oAlmacen = useSelector((state) => state.almacen);
+  const oExistencias = useSelector((state) => state.existencias);
+  const oLog = useSelector((state) => state.log);
+  const oProducto = useSelector((state) => state.producto);
+  const oProveedor = useSelector((state) => state.proveedor);
+  const oSuscription = useSelector((state) => state.suscription);
+  console.log(
+    oUsuarios,
+    oRol,
+    oAlmacen,
+    oExistencias,
+    oLog,
+    oProducto,
+    oProveedor,
+    oSuscription
+  );
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
