@@ -13,8 +13,6 @@ const initialValues = {
   isActive: true,
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const userSchema = yup.object().shape({
   nombre: yup.string().required("required"),
   username: yup.string().email("Invalid email").required("required"),

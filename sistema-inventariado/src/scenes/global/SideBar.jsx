@@ -159,6 +159,34 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
+              title="Almacen Form"
+              to="/almacenForm"
+              icon={<PersonOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Existencias Form"
+              to="/existenciasForm"
+              icon={<PersonOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Producto Form"
+              to="/productoForm"
+              icon={<PersonOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Proveedor Form"
+              to="/proveedorForm"
+              icon={<PersonOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
               title="Login"
               to="/Login"
               icon={<PersonOutlinedIcon />}
