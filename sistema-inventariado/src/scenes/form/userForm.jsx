@@ -3,39 +3,41 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { loginUser } from "../../tools/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { createUser } from "../../tools/userSlice";
 import { useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 const initialValues = {
+  nombre: "",
   username: "",
   password: "",
+  almacen_id: "",
+  isActive: true,
 };
 
 const userSchema = yup.object().shape({
+  nombre: yup.string().required("required"),
   username: yup.string().email("Invalid email").required("required"),
   password: yup.string().required("required"),
+  almacen_id: yup.number().required("required"),
 });
 const Form = () => {
   const oUsuarios = useSelector((state) => state.usuario);
-  console.log(oUsuarios);
   const oNavegacion = useNavigate();
   useEffect(() => {
-    if (oUsuarios.user.isLoged) {
-      console.log("LOGEADO");
-      oNavegacion("/dashboard");
+    if (!oUsuarios.user.isLoged) {
+      console.log("NO LOGEADO");
+      oNavegacion("/Login");
     }
   });
   const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    console.log(values);
-    oDispatch(loginUser(values));
+    oDispatch(createUser(values));
   };
   return (
     <Box m="20px">
-      <Header title="LOGIN" subtitle="Enter your credentials." />
+      <Header title="CREATE USER" subtitle="Create a New User Profile" />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -53,11 +55,25 @@ const Form = () => {
             <Box
               display="grid"
               gap="30px"
-              gridTemplateColumns="repeat(4,minmax(0,2fr))"
+              gridTemplateColumns="repeat(4,minmax(0,1fr))"
               sx={{
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Nombre"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.nombre}
+                name="nombre"
+                error={!!touched.nombre && !!errors.nombre}
+                helperText={touched.nombre && errors.nombre}
+                sx={{ gridColumn: "span 2" }}
+              />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -69,14 +85,13 @@ const Form = () => {
                 name="username"
                 error={!!touched.username && !!errors.username}
                 helperText={touched.username && errors.username}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 2" }}
               />
-
               <TextField
                 fullWidth
                 variant="filled"
                 type="password"
-                label="Password"
+                label="Contraseña"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.password}
@@ -85,10 +100,23 @@ const Form = () => {
                 helperText={touched.password && errors.password}
                 sx={{ gridColumn: "span 4" }}
               />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="number"
+                label="Almacen"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.almacen_id}
+                name="almacen_id"
+                error={!!touched.almacen_id && !!errors.almacen_id}
+                helperText={touched.almacen_id && errors.almacen_id}
+                sx={{ gridColumn: "span 4" }}
+              />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Log in
+                Create New User
               </Button>
             </Box>
           </form>

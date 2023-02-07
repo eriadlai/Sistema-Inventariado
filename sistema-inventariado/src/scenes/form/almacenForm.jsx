@@ -3,33 +3,46 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { useDispatch } from "react-redux";
-import { createUser } from "../../tools/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createAlmacen } from "../../tools/almacenReducer";
+import { useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 const initialValues = {
   nombre: "",
-  username: "",
-  password: "",
-  almacen_id: "",
+  domicilio: "",
+  estado: "",
+  ciudad: "",
+  pais: "",
   isActive: true,
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 const userSchema = yup.object().shape({
   nombre: yup.string().required("required"),
-  username: yup.string().email("Invalid email").required("required"),
-  password: yup.string().required("required"),
-  almacen_id: yup.number().required("required"),
+  domicilio: yup.string().required("required"),
+  estado: yup.string().required("required"),
+  ciudad: yup.string().required("required"),
+  pais: yup.string().required("required"),
 });
-const Form = () => {
+const AlmacenForm = () => {
+  const oUsuarios = useSelector((state) => state.usuario);
+  const oNavegacion = useNavigate();
+  useEffect(() => {
+    if (!oUsuarios.user.isLoged) {
+      console.log("NO LOGEADO");
+      oNavegacion("/Login");
+    }
+  });
   const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    oDispatch(createUser(values));
+    oDispatch(createAlmacen(values));
   };
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header
+        title="CREAR ALMACEN"
+        subtitle="Crear un nuevo punto de almacen"
+      />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -65,50 +78,62 @@ const Form = () => {
                 helperText={touched.nombre && errors.nombre}
                 sx={{ gridColumn: "span 2" }}
               />
-
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Email"
+                label="Domicilio"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.username}
-                name="username"
-                error={!!touched.username && !!errors.username}
-                helperText={touched.username && errors.username}
+                value={values.domicilio}
+                name="domicilio"
+                error={!!touched.domicilio && !!errors.domicilio}
+                helperText={touched.domicilio && errors.domicilio}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
-                type="password"
-                label="Contraseña"
+                type="text"
+                label="Estado"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.password}
-                name="password"
-                error={!!touched.password && !!errors.password}
-                helperText={touched.password && errors.password}
-                sx={{ gridColumn: "span 4" }}
+                value={values.estado}
+                name="estado"
+                error={!!touched.estado && !!errors.estado}
+                helperText={touched.estado && errors.estado}
+                sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
-                type="number"
-                label="Almacen"
+                type="text"
+                label="Ciudad"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.almacen_id}
-                name="almacen_id"
-                error={!!touched.almacen_id && !!errors.almacen_id}
-                helperText={touched.almacen_id && errors.almacen_id}
-                sx={{ gridColumn: "span 4" }}
+                value={values.ciudad}
+                name="ciudad"
+                error={!!touched.ciudad && !!errors.ciudad}
+                helperText={touched.ciudad && errors.ciudad}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Pais"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.pais}
+                name="pais"
+                error={!!touched.pais && !!errors.pais}
+                helperText={touched.pais && errors.pais}
+                sx={{ gridColumn: "span 2" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Create New User
+                Crear Almacen
               </Button>
             </Box>
           </form>
@@ -117,4 +142,4 @@ const Form = () => {
     </Box>
   );
 };
-export default Form;
+export default AlmacenForm;
