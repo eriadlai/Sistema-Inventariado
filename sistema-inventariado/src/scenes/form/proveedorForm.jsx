@@ -3,8 +3,10 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createProveedor } from "../../tools/proveedorReducer";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const initialValues = {
   nombre: "",
   telefono: "",
@@ -22,6 +24,14 @@ const userSchema = yup.object().shape({
   notas: yup.string().required("required"),
 });
 const ProveedorForm = () => {
+   const oUsuarios = useSelector((state) => state.usuario);
+   const oNavegacion = useNavigate();
+   useEffect(() => {
+     if (!oUsuarios.user.isLoged) {
+       console.log("NO LOGEADO");
+       oNavegacion("/Login");
+     }
+   });
   const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {

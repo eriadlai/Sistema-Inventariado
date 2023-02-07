@@ -4,7 +4,9 @@ import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
 import { loginUser } from "../../tools/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const initialValues = {
   username: "",
@@ -16,6 +18,15 @@ const userSchema = yup.object().shape({
   password: yup.string().required("required"),
 });
 const Form = () => {
+  const oUsuarios = useSelector((state) => state.usuario);
+  console.log(oUsuarios);
+  const oNavegacion = useNavigate();
+  useEffect(() => {
+    if (oUsuarios.user.isLoged) {
+      console.log("LOGEADO");
+      oNavegacion("/dashboard");
+    }
+  });
   const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {

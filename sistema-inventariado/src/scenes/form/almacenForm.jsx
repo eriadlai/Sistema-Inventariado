@@ -3,8 +3,10 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createAlmacen } from "../../tools/almacenReducer";
+import { useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 const initialValues = {
   nombre: "",
   domicilio: "",
@@ -22,6 +24,14 @@ const userSchema = yup.object().shape({
   pais: yup.string().required("required"),
 });
 const AlmacenForm = () => {
+  const oUsuarios = useSelector((state) => state.usuario);
+  const oNavegacion = useNavigate();
+  useEffect(() => {
+    if (!oUsuarios.user.isLoged) {
+      console.log("NO LOGEADO");
+      oNavegacion("/Login");
+    }
+  });
   const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {

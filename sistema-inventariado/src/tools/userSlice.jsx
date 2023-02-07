@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Navigate } from "react-router-dom";
 
 /**
  * * LOGICA A GUARDAR
@@ -44,23 +45,24 @@ const userSlice = createSlice({
     loginUser: (state, action) => {
       const { username, password } = action.payload;
       console.log(username, password, "CREDENCIALES INGRESADAS");
+
       //TODO: RutaAPI.post("/UsuarioLogin",{username,password})
       //TODO: Setear usuario activo
       const usuarioActivo = {
-        user: {
-          id: "1",
-          nombre: "Test Nombre",
-          username: username,
-          password: password,
-          almacen_id: "2",
-          isActive: true,
-          isLoged: true,
-        },
+        id: "1",
+        nombre: "Test Nombre",
+        username: username,
+        password: password,
+        almacen_id: "2",
+        isActive: true,
+        isLoged: true,
       };
+
       return {
         ...state,
         user: usuarioActivo,
       };
+
       //TODO: Pop Mensaje + Redireccionamiento
     },
     logoutUser: (state) => {
