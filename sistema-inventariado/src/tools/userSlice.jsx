@@ -15,6 +15,7 @@ const initialState = {
     nombre: "",
     username: "",
     password: "",
+    rol: "",
     almacen_id: "",
     isActive: true,
     isLoged: false,
@@ -53,6 +54,7 @@ const userSlice = createSlice({
         nombre: "Test Nombre",
         username: username,
         password: password,
+        rol: "ADMINISTRADOR",
         almacen_id: "2",
         isActive: true,
         isLoged: true,
@@ -67,15 +69,14 @@ const userSlice = createSlice({
     },
     logoutUser: (state) => {
       const usuarioDesactivado = {
-        user: {
-          id: "",
-          nombre: "",
-          username: "",
-          password: "",
-          almacen_id: "",
-          isActive: true,
-          isLoged: false,
-        },
+        id: "",
+        nombre: "",
+        username: "",
+        password: "",
+        rol: "",
+        almacen_id: "",
+        isActive: true,
+        isLoged: false,
       };
       console.log("LOGOUT");
       return {

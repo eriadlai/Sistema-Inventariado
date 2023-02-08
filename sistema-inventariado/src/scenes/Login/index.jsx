@@ -1,4 +1,14 @@
-import { Box, Button, TextField } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
@@ -7,7 +17,8 @@ import { loginUser } from "../../tools/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Copyright from "../../components/Copyright";
 const initialValues = {
   username: "",
   password: "",
@@ -34,29 +45,38 @@ const Form = () => {
     oDispatch(loginUser(values));
   };
   return (
-    <Box m="20px">
-      <Header title="LOGIN" subtitle="Enter your credentials." />
-      <Formik
-        onSubmit={handleFormSubmit}
-        initialValues={initialValues}
-        validationSchema={userSchema}
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-        }) => (
-          <form onSubmit={handleSubmit}>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Header title="INICIO DE SESION" subtitle="Ingrese sus credenciales" />
+        <Formik
+          onSubmit={handleFormSubmit}
+          initialValues={initialValues}
+          validationSchema={userSchema}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+          }) => (
             <Box
-              display="grid"
-              gap="30px"
-              gridTemplateColumns="repeat(4,minmax(0,2fr))"
-              sx={{
-                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-              }}
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
             >
               <TextField
                 fullWidth
@@ -85,16 +105,22 @@ const Form = () => {
                 helperText={touched.password && errors.password}
                 sx={{ gridColumn: "span 4" }}
               />
-            </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
-                Log in
+
+              <Button
+                type="submit"
+                color="secondary"
+                variant="contained"
+                fullWidth
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Iniciar Sesion
               </Button>
             </Box>
-          </form>
-        )}
-      </Formik>
-    </Box>
+          )}
+        </Formik>
+      </Box>
+      <Copyright sx={{ mt: 8, mb: 10 }} />
+    </Container>
   );
 };
 export default Form;

@@ -23,14 +23,6 @@ const userSchema = yup.object().shape({
   unidad: yup.string().required("required"),
 });
 const ExistenciasForm = () => {
-  const oUsuarios = useSelector((state) => state.usuario);
-  const oNavegacion = useNavigate();
-  useEffect(() => {
-    if (!oUsuarios.user.isLoged) {
-      console.log("NO LOGEADO");
-      oNavegacion("/Login");
-    }
-  });
   const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {

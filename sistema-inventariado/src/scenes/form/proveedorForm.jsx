@@ -24,14 +24,6 @@ const userSchema = yup.object().shape({
   notas: yup.string().required("required"),
 });
 const ProveedorForm = () => {
-   const oUsuarios = useSelector((state) => state.usuario);
-   const oNavegacion = useNavigate();
-   useEffect(() => {
-     if (!oUsuarios.user.isLoged) {
-       console.log("NO LOGEADO");
-       oNavegacion("/Login");
-     }
-   });
   const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
@@ -39,7 +31,7 @@ const ProveedorForm = () => {
   };
   return (
     <Box m="20px">
-      <Header title="CREAR PRODUCTO" subtitle="Crear un nuevo producto" />
+      <Header title="CREAR PROVEEDOR" subtitle="Crear un nuevo proveedor" />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}

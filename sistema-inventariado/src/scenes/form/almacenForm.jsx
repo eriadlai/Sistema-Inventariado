@@ -24,14 +24,6 @@ const userSchema = yup.object().shape({
   pais: yup.string().required("required"),
 });
 const AlmacenForm = () => {
-  const oUsuarios = useSelector((state) => state.usuario);
-  const oNavegacion = useNavigate();
-  useEffect(() => {
-    if (!oUsuarios.user.isLoged) {
-      console.log("NO LOGEADO");
-      oNavegacion("/Login");
-    }
-  });
   const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
