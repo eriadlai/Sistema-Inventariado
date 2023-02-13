@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "../scenes/global/dashboard/index";
-import Team from "../scenes/team/index";
+import TablaUsuarios from "../scenes/tablas/TablaUsuarios";
 import Invoices from "../scenes/invoices/index";
-import Contacts from "../scenes/contacts";
+import TablaAlmacenes from "../scenes/tablas/TablaAlmacenes";
 import Calendar from "../scenes/calendar";
 import Bar from "../scenes/bar/index";
 import Form from "../scenes/form/userForm";
@@ -22,9 +22,9 @@ const Router = () => {
       <Route path="/login" element={<Login />} />
       <Route element={<RutaPrivada />}>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/team" element={<Team />} />
+        <Route path="/team" element={<TablaUsuarios />} />
         <Route path="/invoices" element={<Invoices />} />
-        <Route path="/contacts" element={<Contacts />} />
+        <Route path="/contacts" element={<TablaAlmacenes />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/bar" element={<Bar />} />
         <Route path="/form" element={<Form />} />

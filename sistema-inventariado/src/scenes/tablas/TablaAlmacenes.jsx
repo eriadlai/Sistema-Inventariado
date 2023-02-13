@@ -4,60 +4,48 @@ import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
+import { RutaApi } from "../../api/url";
 
-const Contacts = () => {
+const TablaAlmacenes = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  const [almacenes, setAlmacenes] = useState([]);
+  useEffect(() => {
+    RutaApi.get("/almacenes").then((almacen) => setAlmacenes(almacen.data[0]));
+  }, []);
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "registrarId", headerName: "Registrar ID" },
     {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
+      field: "nombre",
+      headerName: "Nombre",
       cellClassName: "name-column--cell",
     },
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
-    },
-    {
-      field: "phone",
-      headerName: "Phone Number",
+      field: "domicilio",
+      headerName: "Domicilio",
       flex: 1,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "estado",
+      headerName: "Estado",
       flex: 1,
     },
     {
-      field: "address",
-      headerName: "Address",
+      field: "ciudad",
+      headerName: "Ciudad",
       flex: 1,
     },
     {
-      field: "city",
-      headerName: "City",
-      flex: 1,
-    },
-    {
-      field: "zipCode",
-      headerName: "Zip Code",
+      field: "pais",
+      headerName: "Pais",
       flex: 1,
     },
   ];
 
   return (
     <Box m="20px">
-      <Header
-        title="CONTACTS"
-        subtitle="List of Contacts for Future Reference"
-      />
+      <Header title="ALMACENES" subtitle="Listado de almacenes" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -91,7 +79,7 @@ const Contacts = () => {
         }}
       >
         <DataGrid
-          rows={mockDataContacts}
+          rows={almacenes}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
@@ -100,4 +88,4 @@ const Contacts = () => {
   );
 };
 
-export default Contacts;
+export default TablaAlmacenes;

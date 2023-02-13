@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import { RutaApi } from "../api/url";
 
 /**
  * * LOGICA A GUARDAR
@@ -28,8 +30,16 @@ const userSlice = createSlice({
   reducers: {
     createUser: (state, action) => {
       const user = action.payload;
-      console.log(user, "USUARIO REGISTRADO!!");
+      const oUsuario = {
+        oRolId: 1,
+        oNombre: user.nombre,
+        oUsername: user.username,
+        oPassword: user.password,
+        oSalt: "a",
+      };
+      console.log(oUsuario, "USUARIO REGISTRADO!!");
       //TODO: RutaAPI.post("/Usuario",action.payload)
+      RutaApi.post("/usuarios", oUsuario);
       //TODO: Pop Mensaje + Redireccionamiento
     },
     updateUser: (state, action) => {
@@ -46,8 +56,12 @@ const userSlice = createSlice({
     loginUser: (state, action) => {
       const { username, password } = action.payload;
       console.log(username, password, "CREDENCIALES INGRESADAS");
-
+      const oUsuario = [];
       //TODO: RutaAPI.post("/UsuarioLogin",{username,password})
+      RutaApi.get("/usuarios/Login", { oUser: username, oPass: password }).then(
+        (usuario) => (oUsuario = usuario.data[0])
+      );
+      console.log(oUsuario, "==============================");
       //TODO: Setear usuario activo
       const usuarioActivo = {
         id: "1",
