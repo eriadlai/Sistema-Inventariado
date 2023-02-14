@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { RutaApi } from "../api/url";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const MySwal = withReactContent(Swal);
 /**
  * * LOGICA A GUARDAR
  * ! const foundTask = state.find((task) => task.id === id);
@@ -16,7 +18,6 @@ const initialState = {
     id: "",
     nombre: "",
     username: "",
-    password: "",
     rol: "",
     almacen_id: "",
     isActive: true,
@@ -53,32 +54,43 @@ const userSlice = createSlice({
       //TODO: RutaAPI.put("/UsuarioDelete",{id})
       //TODO: Pop Mensaje + Redireccionamiento
     },
-    loginUser: (state, action) => {
+    loginUser: async (state, action) => {
       const { username, password } = action.payload;
-      console.log(username, password, "CREDENCIALES INGRESADAS");
-      const oUsuario = [];
-      //TODO: RutaAPI.post("/UsuarioLogin",{username,password})
-      RutaApi.get("/usuarios/Login", { oUser: username, oPass: password }).then(
-        (usuario) => (oUsuario = usuario.data[0])
-      );
-      console.log(oUsuario, "==============================");
-      //TODO: Setear usuario activo
-      const usuarioActivo = {
-        id: "1",
-        nombre: "Test Nombre",
-        username: username,
-        password: password,
-        rol: "ADMINISTRADOR",
-        almacen_id: "2",
+      const oBody = { oUser: username, oPass: password };
+      let usuarioActivo = {
+        id: "",
+        nombre: "",
+        username: "",
+        rol: "",
+        almacen_id: "",
         isActive: true,
-        isLoged: true,
+        isLoged: false,
       };
-
+      const oUsuario = await RutaApi.post("/usuarios/Login", oBody);
+      if (oUsuario.data[0][0].stado != 40) {
+        MySwal.fire({
+          title: "Success!",
+          text: "Bienvenido!",
+          icon: "success",
+          confirmButtonText: "Aceptar",
+        }).finally(() => {
+          usuarioActivo = {
+            id: oUsuario.data[0][0].id,
+            nombre: oUsuario.data[0][0].nombreUsuario,
+            username: username,
+            rol: oUsuario.data[0][0].usuarioRol,
+            almacen_id: oUsuario.data[0][0].usualmAlmacen_id,
+            isActive: true,
+            isLoged: true,
+          };
+        });
+      } else {
+        console.log("CREDENCIALES INCORRECTAS");
+      }
       return {
         ...state,
         user: usuarioActivo,
       };
-
       //TODO: Pop Mensaje + Redireccionamiento
     },
     logoutUser: (state) => {
@@ -86,13 +98,11 @@ const userSlice = createSlice({
         id: "",
         nombre: "",
         username: "",
-        password: "",
         rol: "",
         almacen_id: "",
         isActive: true,
         isLoged: false,
       };
-      console.log("LOGOUT");
       return {
         ...state,
         user: usuarioDesactivado,

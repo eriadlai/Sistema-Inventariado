@@ -32,12 +32,12 @@ const Form = () => {
   const oUsuarios = useSelector((state) => state.usuario);
   console.log(oUsuarios);
   const oNavegacion = useNavigate();
-  useEffect(() => {
-    if (oUsuarios.user.isLoged) {
-      console.log("LOGEADO");
-      oNavegacion("/dashboard");
-    }
-  });
+  // useEffect(() => {
+  //   if (oUsuarios.user.isLoged) {
+  //     console.log("LOGEADO");
+  //     oNavegacion("/dashboard");
+  //   }
+  // });
   const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
