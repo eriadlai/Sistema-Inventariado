@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -15,6 +15,7 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useSelector } from "react-redux";
+import { RutaApi } from "../../api/url";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -35,7 +36,14 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const Sidebar = () => {
+  const [rol, setRol] = useState([]);
+
   const oUsuarios = useSelector((state) => state.usuario);
+  useEffect(() => {
+    RutaApi.post("/roles/byid", { oID: oUsuarios.user.rol }).then((rol) =>
+      setRol(rol.data[0][0].nombre)
+    );
+  }, []);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -102,7 +110,7 @@ const Sidebar = () => {
                   {oUsuarios.user.nombre}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  {oUsuarios.user.rol}
+                  {rol}
                 </Typography>
               </Box>
             </Box>

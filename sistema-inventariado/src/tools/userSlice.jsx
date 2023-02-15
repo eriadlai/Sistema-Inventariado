@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import { RutaApi } from "../api/url";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { LoginModule } from "../app/usuarioContext";
 const MySwal = withReactContent(Swal);
 /**
  * * LOGICA A GUARDAR
@@ -29,20 +30,6 @@ const userSlice = createSlice({
   name: "usuario",
   initialState,
   reducers: {
-    createUser: (state, action) => {
-      const user = action.payload;
-      const oUsuario = {
-        oRolId: 1,
-        oNombre: user.nombre,
-        oUsername: user.username,
-        oPassword: user.password,
-        oSalt: "a",
-      };
-      console.log(oUsuario, "USUARIO REGISTRADO!!");
-      //TODO: RutaAPI.post("/Usuario",action.payload)
-      RutaApi.post("/usuarios", oUsuario);
-      //TODO: Pop Mensaje + Redireccionamiento
-    },
     updateUser: (state, action) => {
       const { id, nombre, username, almacen_id } = action.payload;
       //TODO: RutaAPI.put("/Usuario",{id,nombre,username,almacen_id})
@@ -54,44 +41,11 @@ const userSlice = createSlice({
       //TODO: RutaAPI.put("/UsuarioDelete",{id})
       //TODO: Pop Mensaje + Redireccionamiento
     },
-    loginUser: async (state, action) => {
-      const { username, password } = action.payload;
-      const oBody = { oUser: username, oPass: password };
-      let usuarioActivo = {
-        id: "",
-        nombre: "",
-        username: "",
-        rol: "",
-        almacen_id: "",
-        isActive: true,
-        isLoged: false,
-      };
-      const oUsuario = await RutaApi.post("/usuarios/Login", oBody);
-      if (oUsuario.data[0][0].stado != 40) {
-        MySwal.fire({
-          title: "Success!",
-          text: "Bienvenido!",
-          icon: "success",
-          confirmButtonText: "Aceptar",
-        }).finally(() => {
-          usuarioActivo = {
-            id: oUsuario.data[0][0].id,
-            nombre: oUsuario.data[0][0].nombreUsuario,
-            username: username,
-            rol: oUsuario.data[0][0].usuarioRol,
-            almacen_id: oUsuario.data[0][0].usualmAlmacen_id,
-            isActive: true,
-            isLoged: true,
-          };
-        });
-      } else {
-        console.log("CREDENCIALES INCORRECTAS");
-      }
+    loginUser: (state, action) => {
       return {
         ...state,
-        user: usuarioActivo,
+        user: action.payload,
       };
-      //TODO: Pop Mensaje + Redireccionamiento
     },
     logoutUser: (state) => {
       const usuarioDesactivado = {
@@ -111,6 +65,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { createUser, updateUser, deleteUser, loginUser, logoutUser } =
+export const { updateUser, deleteUser, loginUser, logoutUser } =
   userSlice.actions;
 export default userSlice.reducer;

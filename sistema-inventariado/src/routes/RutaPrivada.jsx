@@ -6,7 +6,7 @@ const RutaPrivada = () => {
   const oUsuarios = useSelector((state) => state.usuario);
   return (
     <>
-      { <Navigate to="/Login" />}
+      {oUsuarios.user.isLoged === true ? <Layout /> : <Navigate to="/Login" />}
     </>
   );
 };

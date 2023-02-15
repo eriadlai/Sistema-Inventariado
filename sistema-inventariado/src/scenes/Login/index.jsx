@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Copyright from "../../components/Copyright";
+import { LoginModule } from "../../app/usuarioContext";
 const initialValues = {
   username: "",
   password: "",
@@ -32,17 +33,18 @@ const Form = () => {
   const oUsuarios = useSelector((state) => state.usuario);
   console.log(oUsuarios);
   const oNavegacion = useNavigate();
-  // useEffect(() => {
-  //   if (oUsuarios.user.isLoged) {
-  //     console.log("LOGEADO");
-  //     oNavegacion("/dashboard");
-  //   }
-  // });
+  useEffect(() => {
+    if (oUsuarios.user.isLoged) {
+      oNavegacion("/dashboard");
+    }
+  });
   const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
     console.log(values);
-    oDispatch(loginUser(values));
+    LoginModule(values.username, values.password).then((data) =>
+      oDispatch(loginUser(data))
+    );
   };
   return (
     <Container component="main" maxWidth="xs">
