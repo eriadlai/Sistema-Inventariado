@@ -15,7 +15,7 @@ export const LoginModule = async (username, password) => {
     isLoged: false,
   };
   const oUsuario = await RutaApi.post("/usuarios/Login", oBody);
-  if (oUsuario.data[0][0].stado != 40) {
+  if (oUsuario.data[0][0].stado !== 40) {
     MySwal.fire({
       title: "Success!",
       text: "Bienvenido!",
@@ -68,4 +68,25 @@ export const CrearUsuario = async (oUsuario) => {
       confirmButtonText: "OK",
     });
   }
+};
+export const EliminarUsuario = async (oID) => {
+  RutaApi.put("/usuarios/delete", { oUsuarioId: oID })
+    .then((res) => {
+      console.log(res);
+      MySwal.fire({
+        title: "Accion exitosa",
+        text: "El registro ha sido eliminado con exito",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(function () {
+        window.location.reload();
+      });
+    })
+    .catch((error) => {
+      MySwal.fire({
+        title: "Error",
+        text: "No se pudo eliminar el componente: " + error,
+        icon: "error",
+      });
+    });
 };

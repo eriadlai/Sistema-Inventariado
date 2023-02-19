@@ -3,16 +3,12 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { createProveedor } from "../../tools/proveedorReducer";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { CrearProveedor } from "../../app/proveedorContext";
 const initialValues = {
   nombre: "",
   telefono: "",
   correo: "",
   notas: "",
-  isActive: true,
 };
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -24,10 +20,9 @@ const userSchema = yup.object().shape({
   notas: yup.string().required("required"),
 });
 const ProveedorForm = () => {
-  const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    oDispatch(createProveedor(values));
+    CrearProveedor(values);
   };
   return (
     <Box m="20px">

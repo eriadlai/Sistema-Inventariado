@@ -6,9 +6,10 @@ import TablaAlmacenes from "../scenes/tablas/TablaAlmacenes";
 import Calendar from "../scenes/calendar";
 import Bar from "../scenes/bar/index";
 import Form from "../scenes/form/userForm";
+import UserEditForm from "../scenes/form/userEditForm";
 import AlmacenForm from "../scenes/form/almacenForm";
-import ExistenciasForm from "../scenes/form/existensiasForm";
 import ProductoForm from "../scenes/form/productoForm";
+import TablaProductos from "../scenes/tablas/TablaProductos";
 import ProveedorForm from "../scenes/form/proveedorForm";
 import Pie from "../scenes/pie";
 import FAQ from "../scenes/faq";
@@ -23,13 +24,14 @@ const Router = () => {
       <Route element={<RutaPrivada />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/team" element={<TablaUsuarios />} />
+        <Route path="/EditUsuario" element={<UserEditForm />} />
         <Route path="/invoices" element={<Invoices />} />
         <Route path="/contacts" element={<TablaAlmacenes />} />
+        <Route path="/TablaProductos" element={<TablaProductos />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/bar" element={<Bar />} />
         <Route path="/form" element={<Form />} />
         <Route path="/almacenForm" element={<AlmacenForm />} />
-        <Route path="/existenciasForm" element={<ExistenciasForm />} />
         <Route path="/productoForm" element={<ProductoForm />} />
         <Route path="/proveedorForm" element={<ProveedorForm />} />
         <Route path="/pie" element={<Pie />} />

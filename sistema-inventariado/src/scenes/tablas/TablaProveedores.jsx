@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
@@ -6,24 +6,14 @@ import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { RutaApi } from "../../api/url";
-import { useNavigate } from "react-router-dom";
 
 const TablaAlmacenes = () => {
-  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [almacenes, setAlmacenes] = useState([]);
   useEffect(() => {
-    RutaApi.get("/almacenes").then((almacen) => setAlmacenes(almacen.data[0]));
+    RutaApi.get("/proveedores").then((almacen) => setAlmacenes(almacen.data[0]));
   }, []);
-  const handleProductos = (id) => {
-    navigate("/TablaProductos", { state: id });
-  };
-  const handleEdit = (data) => {
-    navigate("/EditUsuario", { state: data });
-  };
-
-  const handleDelete = (id) => {};
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     {
@@ -50,44 +40,6 @@ const TablaAlmacenes = () => {
       field: "pais",
       headerName: "Pais",
       flex: 1,
-    },
-
-    {
-      field: "acciones",
-      headerName: "Acciones",
-      flex: 2,
-      renderCell: (cellValues) => {
-        return (
-          <>
-            <Button
-              type="submit"
-              color="secondary"
-              variant="contained"
-              sx={{ marginRight: 1 }}
-              onClick={() => handleProductos(cellValues.row.id)}
-            >
-              PRODUCTOS
-            </Button>
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              onClick={() => handleEdit(cellValues.row)}
-              sx={{ marginRight: 1 }}
-            >
-              EDITAR
-            </Button>
-            <Button
-              type="submit"
-              color="warning"
-              variant="contained"
-              onClick={() => handleDelete(cellValues.row.id)}
-            >
-              ELIMINAR
-            </Button>
-          </>
-        );
-      },
     },
   ];
 

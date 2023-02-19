@@ -3,17 +3,13 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { createAlmacen } from "../../tools/almacenReducer";
-import { useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { CrearAlmacen } from "../../app/almacenContext";
 const initialValues = {
   nombre: "",
   domicilio: "",
   estado: "",
   ciudad: "",
   pais: "",
-  isActive: true,
 };
 
 const userSchema = yup.object().shape({
@@ -24,10 +20,9 @@ const userSchema = yup.object().shape({
   pais: yup.string().required("required"),
 });
 const AlmacenForm = () => {
-  const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    oDispatch(createAlmacen(values));
+    CrearAlmacen(values);
   };
   return (
     <Box m="20px">

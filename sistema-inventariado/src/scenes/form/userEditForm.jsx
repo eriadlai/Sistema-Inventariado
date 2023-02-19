@@ -6,13 +6,7 @@ import Header from "../../components/Header";
 import { CrearUsuario } from "../../app/usuarioContext";
 import { useEffect, useState } from "react";
 import { RutaApi } from "../../api/url";
-const initialValues = {
-  nombre: "",
-  username: "",
-  password: "",
-  almacen_id: "",
-  rol: "",
-};
+import { useLocation } from "react-router-dom";
 
 const userSchema = yup.object().shape({
   nombre: yup.string().required("required"),
@@ -21,7 +15,8 @@ const userSchema = yup.object().shape({
   almacen_id: yup.number().required("required"),
   rol: yup.number().required("required"),
 });
-const Form = () => {
+const UserEditForm = () => {
+  const { state: data } = useLocation();
   const [almacenes, setAlmacenes] = useState([]);
   const [roles, setRoles] = useState([]);
   useEffect(() => {
@@ -30,13 +25,20 @@ const Form = () => {
   useEffect(() => {
     RutaApi.get("/roles").then((rol) => setRoles(rol.data[0]));
   }, []);
+
+  const initialValues = {
+    nombre: data.nombre,
+    username: data.usuario,
+    almacen_id: data.almacen_id,
+    rol: data.rol,
+  };
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
     CrearUsuario(values);
   };
   return (
     <Box m="20px">
-      <Header title="CREATE USER" subtitle="Create a New User Profile" />
+      <Header title="Editar Usuario" subtitle="Edicion de datos del usuario" />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -85,19 +87,6 @@ const Form = () => {
                 helperText={touched.username && errors.username}
                 sx={{ gridColumn: "span 2" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="password"
-                label="Contraseña"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.password}
-                name="password"
-                error={!!touched.password && !!errors.password}
-                helperText={touched.password && errors.password}
-                sx={{ gridColumn: "span 4" }}
-              />
               {/** CONVERTIR ESTOS TEXTFIELD EN DROPDOWN */}
               <Autocomplete
                 disablePortal
@@ -133,4 +122,4 @@ const Form = () => {
     </Box>
   );
 };
-export default Form;
+export default UserEditForm;

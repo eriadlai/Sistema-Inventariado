@@ -3,16 +3,12 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { createProducto } from "../../tools/productoReducer";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { CrearProducto } from "../../app/productoContext";
 const initialValues = {
   nombre: "",
   descripcion: "",
   sku: "",
   precio: "",
-  isActive: true,
 };
 
 const userSchema = yup.object().shape({
@@ -22,10 +18,9 @@ const userSchema = yup.object().shape({
   precio: yup.string().required("required"),
 });
 const ProductoForm = () => {
-  const oDispatch = useDispatch();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    oDispatch(createProducto(values));
+    CrearProducto(values);
   };
   return (
     <Box m="20px">

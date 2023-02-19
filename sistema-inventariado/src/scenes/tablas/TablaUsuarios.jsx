@@ -1,17 +1,26 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataTeam } from "../../data/mockData";
+import { useNavigate } from "react-router-dom";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
 import { useEffect, useState } from "react";
 import { RutaApi } from "../../api/url";
+import { EliminarUsuario } from "../../app/usuarioContext";
 
 const TablaUsuarios = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const handleEdit = (data) => {
+    navigate("/EditUsuario", { state: data });
+  };
+
+  const handleDelete = (id) => {
+    EliminarUsuario(id);
+  };
   const columns = [
     { field: "usuid", headerName: "ID" },
     {
@@ -56,6 +65,34 @@ const TablaUsuarios = () => {
               {rol}
             </Typography>
           </Box>
+        );
+      },
+    },
+    {
+      field: "acciones",
+      headerName: "Acciones",
+      width: 150,
+      renderCell: (cellValues) => {
+        return (
+          <>
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              onClick={() => handleEdit(cellValues.row)}
+              sx={{ marginRight: 1 }}
+            >
+              EDITAR
+            </Button>
+            <Button
+              type="submit"
+              color="warning"
+              variant="contained"
+              onClick={() => handleDelete(cellValues.row.usuid)}
+            >
+              ELIMINAR
+            </Button>
+          </>
         );
       },
     },
