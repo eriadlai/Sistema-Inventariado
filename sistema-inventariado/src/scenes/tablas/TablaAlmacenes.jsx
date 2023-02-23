@@ -1,14 +1,15 @@
 import { Box, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { RutaApi } from "../../api/url";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { setAlmacen } from "../../tools/almacenReducer";
 const TablaAlmacenes = () => {
+  const oDispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -17,13 +18,16 @@ const TablaAlmacenes = () => {
     RutaApi.get("/almacenes").then((almacen) => setAlmacenes(almacen.data[0]));
   }, []);
   const handleProductos = (id) => {
+    oDispatch(setAlmacen(id));
     navigate("/TablaProductos", { state: id });
   };
   const handleEdit = (data) => {
     navigate("/EditUsuario", { state: data });
   };
 
-  const handleDelete = (id) => {};
+  const handleDelete = (id) => {
+    console.log(id);
+  };
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     {

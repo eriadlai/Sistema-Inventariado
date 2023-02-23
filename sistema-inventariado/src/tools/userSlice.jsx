@@ -30,17 +30,6 @@ const userSlice = createSlice({
   name: "usuario",
   initialState,
   reducers: {
-    updateUser: (state, action) => {
-      const { id, nombre, username, almacen_id } = action.payload;
-      //TODO: RutaAPI.put("/Usuario",{id,nombre,username,almacen_id})
-      //TODO: Pop Mensaje + Redireccionamiento
-    },
-    deleteUser: (state, action) => {
-      const { id } = action.payload;
-      //? const foundTask = state.find((task) => task.id === action.payload);
-      //TODO: RutaAPI.put("/UsuarioDelete",{id})
-      //TODO: Pop Mensaje + Redireccionamiento
-    },
     loginUser: (state, action) => {
       return {
         ...state,
@@ -65,6 +54,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { updateUser, deleteUser, loginUser, logoutUser } =
+export const {  loginUser, logoutUser } =
   userSlice.actions;
 export default userSlice.reducer;

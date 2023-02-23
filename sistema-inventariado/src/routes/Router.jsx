@@ -9,6 +9,7 @@ import Form from "../scenes/form/userForm";
 import UserEditForm from "../scenes/form/userEditForm";
 import AlmacenForm from "../scenes/form/almacenForm";
 import ProductoForm from "../scenes/form/productoForm";
+import ProductoEditForm from "../scenes/form/productoEditForm";
 import TablaProductos from "../scenes/tablas/TablaProductos";
 import ProveedorForm from "../scenes/form/proveedorForm";
 import Pie from "../scenes/pie";
@@ -28,6 +29,7 @@ const Router = () => {
         <Route path="/invoices" element={<Invoices />} />
         <Route path="/contacts" element={<TablaAlmacenes />} />
         <Route path="/TablaProductos" element={<TablaProductos />} />
+        <Route path="/EditProducto" element={<ProductoEditForm />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/bar" element={<Bar />} />
         <Route path="/form" element={<Form />} />

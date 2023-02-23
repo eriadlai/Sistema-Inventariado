@@ -1,21 +1,31 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useEffect, useState } from "react";
 import { RutaApi } from "../../api/url";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const TablaProductos = () => {
+  const oIdAlmacen = useSelector((state) => state.almacen);
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { state: id } = useLocation();
-  console.log(id);
   const [productos, setProductos] = useState([]);
   useEffect(() => {
-    RutaApi.post("/products/byalmacenid", { oAlmacenId: id }).then((producto) =>
-      setProductos(producto.data[0])
-    );
+    RutaApi.post("/products/byalmacenid", {
+      oAlmacenId: oIdAlmacen.idAlmacen,
+    }).then((producto) => setProductos(producto.data[0]));
   }, []);
+  const handleEdit = (data) => {
+    RutaApi.post("/products/byid", { oProductoId: data }).then((producto) =>
+      navigate("/EditProducto", { state: producto.data[0][0] })
+    );
+  };
+
+  const handleDelete = (id) => {
+    console.log(id);
+  };
   const columns = [
     { field: "prodid", headerName: "ID" },
     {
@@ -51,6 +61,34 @@ const TablaProductos = () => {
       headerName: "Unidad",
       flex: 1,
       cellClassName: "name-column--cell",
+    },
+    {
+      field: "acciones",
+      headerName: "Acciones",
+      flex: 2,
+      renderCell: (cellValues) => {
+        return (
+          <>
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              onClick={() => handleEdit(cellValues.row.prodid)}
+              sx={{ marginRight: 1 }}
+            >
+              EDITAR
+            </Button>
+            <Button
+              type="submit"
+              color="warning"
+              variant="contained"
+              onClick={() => handleDelete(cellValues.row.prodid)}
+            >
+              ELIMINAR
+            </Button>
+          </>
+        );
+      },
     },
   ];
 

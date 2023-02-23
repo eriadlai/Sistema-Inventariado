@@ -16,7 +16,6 @@ const Dashboard = () => {
   const oUsuarios = useSelector((state) => state.usuario);
   const oRol = useSelector((state) => state.rol);
   const oAlmacen = useSelector((state) => state.almacen);
-  const oExistencias = useSelector((state) => state.existencias);
   const oLog = useSelector((state) => state.log);
   const oProducto = useSelector((state) => state.producto);
   const oProveedor = useSelector((state) => state.proveedor);
@@ -25,7 +24,6 @@ const Dashboard = () => {
     oUsuarios,
     oRol,
     oAlmacen,
-    oExistencias,
     oLog,
     oProducto,
     oProveedor,
