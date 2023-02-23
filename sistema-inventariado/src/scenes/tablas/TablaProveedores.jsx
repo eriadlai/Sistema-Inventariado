@@ -1,51 +1,85 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { RutaApi } from "../../api/url";
+import { useNavigate } from "react-router-dom";
 
-const TablaAlmacenes = () => {
+const TablaProveedores = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [almacenes, setAlmacenes] = useState([]);
+  const [proveedores, setProveedores] = useState([]);
   useEffect(() => {
-    RutaApi.get("/proveedores").then((almacen) => setAlmacenes(almacen.data[0]));
+    RutaApi.get("/proveedores").then((proveedor) =>
+      setProveedores(proveedor.data[0])
+    );
   }, []);
+
+  const handleEdit = (data) => {
+    navigate("/EditProveedor", { state: data });
+  };
+
+  const handleDelete = (id) => {
+    console.log(id);
+  };
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
+    { field: "provid", headerName: "ID", flex: 0.5 },
     {
-      field: "nombre",
+      field: "provnombre",
       headerName: "Nombre",
       cellClassName: "name-column--cell",
     },
     {
-      field: "domicilio",
-      headerName: "Domicilio",
+      field: "provtelefono",
+      headerName: "Telefono",
       flex: 1,
     },
     {
-      field: "estado",
-      headerName: "Estado",
+      field: "provcorreo",
+      headerName: "Correo",
       flex: 1,
     },
     {
-      field: "ciudad",
-      headerName: "Ciudad",
+      field: "almnombre",
+      headerName: "Almacen Destino",
       flex: 1,
     },
     {
-      field: "pais",
-      headerName: "Pais",
-      flex: 1,
+      field: "acciones",
+      headerName: "Acciones",
+      flex: 2,
+      renderCell: (cellValues) => {
+        return (
+          <>
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              onClick={() => handleEdit(cellValues.row)}
+              sx={{ marginRight: 1 }}
+            >
+              EDITAR
+            </Button>
+            <Button
+              type="submit"
+              color="warning"
+              variant="contained"
+              onClick={() => handleDelete(cellValues.row.id)}
+            >
+              ELIMINAR
+            </Button>
+          </>
+        );
+      },
     },
   ];
 
   return (
     <Box m="20px">
-      <Header title="ALMACENES" subtitle="Listado de almacenes" />
+      <Header title="PROVEEDORES" subtitle="Listado de proveedores" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -79,7 +113,8 @@ const TablaAlmacenes = () => {
         }}
       >
         <DataGrid
-          rows={almacenes}
+          getRowId={(provedoores) => provedoores.provid}
+          rows={proveedores}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
@@ -88,4 +123,4 @@ const TablaAlmacenes = () => {
   );
 };
 
-export default TablaAlmacenes;
+export default TablaProveedores;

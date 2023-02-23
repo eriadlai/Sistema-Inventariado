@@ -71,7 +71,7 @@ const TablaUsuarios = () => {
     {
       field: "acciones",
       headerName: "Acciones",
-      width: 150,
+      flex: 2,
       renderCell: (cellValues) => {
         return (
           <>

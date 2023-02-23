@@ -29,3 +29,23 @@ export const CrearAlmacen = async (oAlmacen) => {
     });
   }
 };
+export const EliminarAlmacen = async (oID) => {
+  RutaApi.put("/almacenes/delete", { oAlmacenId: oID })
+    .then((res) => {
+      MySwal.fire({
+        title: "Accion exitosa",
+        text: "El registro ha sido eliminado con exito",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(function () {
+        window.location.reload();
+      });
+    })
+    .catch((error) => {
+      MySwal.fire({
+        title: "Error",
+        text: "No se pudo eliminar el componente: " + error,
+        icon: "error",
+      });
+    });
+};

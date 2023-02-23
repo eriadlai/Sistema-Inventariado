@@ -8,6 +8,7 @@ import { RutaApi } from "../../api/url";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAlmacen } from "../../tools/almacenReducer";
+import { EliminarAlmacen } from "../../app/almacenContext";
 const TablaAlmacenes = () => {
   const oDispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const TablaAlmacenes = () => {
   };
 
   const handleDelete = (id) => {
-    console.log(id);
+    EliminarAlmacen(id);
   };
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },

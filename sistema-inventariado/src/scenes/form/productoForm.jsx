@@ -1,26 +1,45 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
 import { CrearProducto } from "../../app/productoContext";
+import { useEffect, useState } from "react";
+import { RutaApi } from "../../api/url";
 const initialValues = {
   nombre: "",
   descripcion: "",
   sku: "",
   precio: "",
+  almacenid: "",
+  proveedorid: "",
+  unidad: "",
 };
 
 const userSchema = yup.object().shape({
   nombre: yup.string().required("required"),
   descripcion: yup.string().required("required"),
   sku: yup.string().required("required"),
-  precio: yup.string().required("required"),
+  precio: yup.number().required("required"),
+  almacenid: yup.number().required("required"),
+  proveedorid: yup.number().required("required"),
+  unidad: yup.string().required("required"),
 });
 const ProductoForm = () => {
+  const [almacenes, setAlmacenes] = useState([]);
+  const [proveedores, setProveedores] = useState([]);
+  useEffect(() => {
+    RutaApi.get("/almacenes").then((almacen) => setAlmacenes(almacen.data[0]));
+  }, []);
+  useEffect(() => {
+    RutaApi.get("/proveedores").then((proveedor) =>
+      setProveedores(proveedor.data[0])
+    );
+  }, []);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    CrearProducto(values);
+    console.log(values);
+    //CrearProducto(values);
   };
   return (
     <Box m="20px">
@@ -98,6 +117,28 @@ const ProductoForm = () => {
                 error={!!touched.precio && !!errors.precio}
                 helperText={touched.precio && errors.precio}
                 sx={{ gridColumn: "span 2" }}
+              />
+              <Autocomplete
+                disablePortal
+                id="oAlmacenes"
+                onChange={(event, value) => (values.almacenid = value.id)}
+                options={almacenes}
+                getOptionLabel={(opt) => opt.nombre}
+                sx={{ gridColumn: "span 2" }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Almacenes" />
+                )}
+              />
+              <Autocomplete
+                disablePortal
+                id="oProveedores"
+                onChange={(event, value) => (values.proveedorid = value.provid)}
+                options={proveedores}
+                getOptionLabel={(opt) => opt.provnombre}
+                sx={{ gridColumn: "span 2" }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Proveedores" />
+                )}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">

@@ -12,6 +12,7 @@ import ProductoForm from "../scenes/form/productoForm";
 import ProductoEditForm from "../scenes/form/productoEditForm";
 import TablaProductos from "../scenes/tablas/TablaProductos";
 import ProveedorForm from "../scenes/form/proveedorForm";
+import TablaProveedores from "../scenes/tablas/TablaProveedores";
 import Pie from "../scenes/pie";
 import FAQ from "../scenes/faq";
 import Login from "../scenes/Login";
@@ -29,6 +30,7 @@ const Router = () => {
         <Route path="/invoices" element={<Invoices />} />
         <Route path="/contacts" element={<TablaAlmacenes />} />
         <Route path="/TablaProductos" element={<TablaProductos />} />
+        <Route path="/TablaProveedores" element={<TablaProveedores />} />
         <Route path="/EditProducto" element={<ProductoEditForm />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/bar" element={<Bar />} />

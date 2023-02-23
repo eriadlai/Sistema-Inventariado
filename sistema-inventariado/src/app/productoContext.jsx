@@ -10,6 +10,9 @@ export const CrearProducto = async (oProducto) => {
       oDescripcion: oProducto.descripcion,
       oSku: oProducto.sku,
       oPrecio: oProducto.precio,
+      oAlmacenId: oProducto.almacenid,
+      oProveedorId: oProducto.proveedorid,
+      oUnidad: oProducto.unidad,
     };
     await RutaApi.post("/products", SetProducto).then(
       MySwal.fire({
