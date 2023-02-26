@@ -3,13 +3,9 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { CrearProveedor } from "../../app/proveedorContext";
-const initialValues = {
-  nombre: "",
-  telefono: "",
-  correo: "",
-  notas: "",
-};
+import { UpdateProveedor } from "../../app/proveedorContext";
+import { useLocation } from "react-router-dom";
+
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
@@ -19,10 +15,18 @@ const userSchema = yup.object().shape({
   correo: yup.string().email("Invalid Email").required("required"),
   notas: yup.string().required("required"),
 });
-const ProveedorForm = () => {
+const ProveedorEditForm = () => {
+  const { state: data } = useLocation();
+  const initialValues = {
+    id: data.provid,
+    nombre: data.provnombre,
+    telefono: data.provtelefono,
+    correo: data.provcorreo,
+    notas: data.provnotas,
+  };
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    CrearProveedor(values);
+    UpdateProveedor(values);
   };
   return (
     <Box m="20px">
@@ -105,7 +109,7 @@ const ProveedorForm = () => {
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Crear Proveedor
+                Actualizar Proveedor
               </Button>
             </Box>
           </form>
@@ -114,4 +118,4 @@ const ProveedorForm = () => {
     </Box>
   );
 };
-export default ProveedorForm;
+export default ProveedorEditForm;

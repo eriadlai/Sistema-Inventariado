@@ -1,18 +1,17 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { createUser } from "../../tools/userSlice";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { CrearUsuario } from "../../app/usuarioContext";
+import { useEffect, useState } from "react";
+import { RutaApi } from "../../api/url";
 const initialValues = {
   nombre: "",
   username: "",
   password: "",
   almacen_id: "",
-  isActive: true,
+  rol: "",
 };
 
 const userSchema = yup.object().shape({
@@ -20,20 +19,20 @@ const userSchema = yup.object().shape({
   username: yup.string().email("Invalid email").required("required"),
   password: yup.string().required("required"),
   almacen_id: yup.number().required("required"),
+  rol: yup.number().required("required"),
 });
 const Form = () => {
-  const oUsuarios = useSelector((state) => state.usuario);
-  const oNavegacion = useNavigate();
+  const [almacenes, setAlmacenes] = useState([]);
+  const [roles, setRoles] = useState([]);
   useEffect(() => {
-    if (!oUsuarios.user.isLoged) {
-      console.log("NO LOGEADO");
-      oNavegacion("/Login");
-    }
-  });
-  const oDispatch = useDispatch();
+    RutaApi.get("/almacenes").then((almacen) => setAlmacenes(almacen.data[0]));
+  }, []);
+  useEffect(() => {
+    RutaApi.get("/roles").then((rol) => setRoles(rol.data[0]));
+  }, []);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    oDispatch(createUser(values));
+    CrearUsuario(values);
   };
   return (
     <Box m="20px">
@@ -73,7 +72,6 @@ const Form = () => {
                 helperText={touched.nombre && errors.nombre}
                 sx={{ gridColumn: "span 2" }}
               />
-
               <TextField
                 fullWidth
                 variant="filled"
@@ -100,18 +98,28 @@ const Form = () => {
                 helperText={touched.password && errors.password}
                 sx={{ gridColumn: "span 4" }}
               />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="Almacen"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.almacen_id}
-                name="almacen_id"
-                error={!!touched.almacen_id && !!errors.almacen_id}
-                helperText={touched.almacen_id && errors.almacen_id}
-                sx={{ gridColumn: "span 4" }}
+              {/** CONVERTIR ESTOS TEXTFIELD EN DROPDOWN */}
+              <Autocomplete
+                disablePortal
+                id="oAlmacenes"
+                onChange={(event, value) => (values.almacen_id = value.id)}
+                options={almacenes}
+                getOptionLabel={(opt) => opt.nombre}
+                sx={{ gridColumn: "span 2" }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Almacenes" />
+                )}
+              />
+              <Autocomplete
+                disablePortal
+                id="oRoles"
+                options={roles}
+                onChange={(event, value) => (values.rol = value.id)}
+                getOptionLabel={(opt) => opt.nombre}
+                sx={{ gridColumn: "span 2" }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Roles" />
+                )}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">

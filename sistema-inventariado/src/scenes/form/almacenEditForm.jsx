@@ -3,45 +3,34 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { createExistencias } from "../../tools/existensiasReducer";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-const initialValues = {
-  almacen_id: "",
-  producto_id: "",
-  proveedor_id: "",
-  cantidad: "",
-  unidad: "",
-};
+import { UpdateAlmacen } from "../../app/almacenContext";
+import { useLocation } from "react-router-dom";
 
 const userSchema = yup.object().shape({
-  almacen_id: yup.number().required("required"),
-  producto_id: yup.number().required("required"),
-  proveedor_id: yup.number().required("required"),
-  cantidad: yup.string().required("required"),
-  unidad: yup.string().required("required"),
+  nombre: yup.string().required("required"),
+  domicilio: yup.string().required("required"),
+  estado: yup.string().required("required"),
+  ciudad: yup.string().required("required"),
+  pais: yup.string().required("required"),
 });
-const ExistenciasForm = () => {
-  const oUsuarios = useSelector((state) => state.usuario);
-  const oNavegacion = useNavigate();
-  useEffect(() => {
-    if (!oUsuarios.user.isLoged) {
-      console.log("NO LOGEADO");
-      oNavegacion("/Login");
-    }
-  });
-  const oDispatch = useDispatch();
+const AlmacenEditForm = () => {
+  const { state: data } = useLocation();
+  console.log(data);
+  const initialValues = {
+    id: data.id,
+    nombre: data.nombre,
+    domicilio: data.domicilio,
+    estado: data.estado,
+    ciudad: data.ciudad,
+    pais: data.pais,
+  };
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    oDispatch(createExistencias(values));
+    UpdateAlmacen(values);
   };
   return (
     <Box m="20px">
-      <Header
-        title="CREAR EXISTENCIAS"
-        subtitle="Manejar las existencias de los productos"
-      />
+      <Header title="EDITAR ALMACEN" subtitle="Modificar punto de almacen" />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -67,72 +56,72 @@ const ExistenciasForm = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="number"
-                label="Almacen"
+                type="text"
+                label="Nombre"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.almacen_id}
-                name="almacen_id"
-                error={!!touched.almacen_id && !!errors.almacen_id}
-                helperText={touched.almacen_id && errors.almacen_id}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="Producto"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.producto_id}
-                name="producto_id"
-                error={!!touched.producto_id && !!errors.producto_id}
-                helperText={touched.producto_id && errors.producto_id}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="number"
-                label="Proveedor"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.proveedor_id}
-                name="proveedor_id"
-                error={!!touched.proveedor_id && !!errors.proveedor_id}
-                helperText={touched.proveedor_id && errors.proveedor_id}
+                value={values.nombre}
+                name="nombre"
+                error={!!touched.nombre && !!errors.nombre}
+                helperText={touched.nombre && errors.nombre}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Cantidad"
+                label="Domicilio"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.cantidad}
-                name="cantidad"
-                error={!!touched.cantidad && !!errors.cantidad}
-                helperText={touched.cantidad && errors.cantidad}
+                value={values.domicilio}
+                name="domicilio"
+                error={!!touched.domicilio && !!errors.domicilio}
+                helperText={touched.domicilio && errors.domicilio}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Unidad"
+                label="Estado"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.unidad}
-                name="unidad"
-                error={!!touched.unidad && !!errors.unidad}
-                helperText={touched.unidad && errors.unidad}
+                value={values.estado}
+                name="estado"
+                error={!!touched.estado && !!errors.estado}
+                helperText={touched.estado && errors.estado}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Ciudad"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.ciudad}
+                name="ciudad"
+                error={!!touched.ciudad && !!errors.ciudad}
+                helperText={touched.ciudad && errors.ciudad}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Pais"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.pais}
+                name="pais"
+                error={!!touched.pais && !!errors.pais}
+                helperText={touched.pais && errors.pais}
                 sx={{ gridColumn: "span 2" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Crear Existencias
+                Actualizar Almacen
               </Button>
             </Box>
           </form>
@@ -141,4 +130,4 @@ const ExistenciasForm = () => {
     </Box>
   );
 };
-export default ExistenciasForm;
+export default AlmacenEditForm;

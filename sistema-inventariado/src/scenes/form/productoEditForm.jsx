@@ -3,30 +3,34 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { CrearProveedor } from "../../app/proveedorContext";
-const initialValues = {
-  nombre: "",
-  telefono: "",
-  correo: "",
-  notas: "",
-};
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+import { UpdateProducto } from "../../app/productoContext";
+import { useLocation } from "react-router-dom";
 
 const userSchema = yup.object().shape({
   nombre: yup.string().required("required"),
-  telefono: yup.number(phoneRegExp).required("required"),
-  correo: yup.string().email("Invalid Email").required("required"),
-  notas: yup.string().required("required"),
+  descripcion: yup.string().required("required"),
+  sku: yup.string().required("required"),
+  precio: yup.string().required("required"),
 });
-const ProveedorForm = () => {
+const ProductoEditForm = () => {
+  const { state: data } = useLocation();
+  const initialValues = {
+    id: data.prodid,
+    nombre: data.prodnombre,
+    descripcion: data.proddesc,
+    sku: data.prodsku,
+    precio: data.prodprecio,
+  };
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    CrearProveedor(values);
+    UpdateProducto(values);
   };
   return (
     <Box m="20px">
-      <Header title="CREAR PROVEEDOR" subtitle="Crear un nuevo proveedor" />
+      <Header
+        title="EDITAR PRODUCTO"
+        subtitle="Actualiza los datos del producto"
+      />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -65,47 +69,46 @@ const ProveedorForm = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="number"
-                label="Telefono"
-                InputProps={{ inputProps: { min: 0 } }}
+                type="text"
+                label="Descripcion"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.telefono}
-                name="telefono"
-                error={!!touched.telefono && !!errors.telefono}
-                helperText={touched.telefono && errors.telefono}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="email"
-                label="Correo"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.correo}
-                name="correo"
-                error={!!touched.correo && !!errors.correo}
-                helperText={touched.correo && errors.correo}
+                value={values.descripcion}
+                name="descripcion"
+                error={!!touched.descripcion && !!errors.descripcion}
+                helperText={touched.descripcion && errors.descripcion}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Nota"
+                label="SKU"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.notas}
-                name="notas"
-                error={!!touched.notas && !!errors.notas}
-                helperText={touched.notas && errors.notas}
+                value={values.sku}
+                name="sku"
+                error={!!touched.sku && !!errors.sku}
+                helperText={touched.sku && errors.sku}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Precio"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.precio}
+                name="precio"
+                error={!!touched.precio && !!errors.precio}
+                helperText={touched.precio && errors.precio}
                 sx={{ gridColumn: "span 2" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Crear Proveedor
+                Actualizar Producto
               </Button>
             </Box>
           </form>
@@ -114,4 +117,4 @@ const ProveedorForm = () => {
     </Box>
   );
 };
-export default ProveedorForm;
+export default ProductoEditForm;

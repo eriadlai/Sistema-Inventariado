@@ -1,4 +1,4 @@
 import axios from "axios";
 export const RutaApi = axios.create({
-  baseURL: "",
+  baseURL: "http://localhost:4000",
 });

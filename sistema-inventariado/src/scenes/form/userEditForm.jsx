@@ -1,32 +1,39 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { CrearProveedor } from "../../app/proveedorContext";
-const initialValues = {
-  nombre: "",
-  telefono: "",
-  correo: "",
-  notas: "",
-};
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+import { UpdateUsuario } from "../../app/usuarioContext";
+import { useEffect, useState } from "react";
+import { RutaApi } from "../../api/url";
+import { useLocation } from "react-router-dom";
 
 const userSchema = yup.object().shape({
   nombre: yup.string().required("required"),
-  telefono: yup.number(phoneRegExp).required("required"),
-  correo: yup.string().email("Invalid Email").required("required"),
-  notas: yup.string().required("required"),
+  username: yup.string().email("Invalid email").required("required"),
+  rol: yup.number().required("required"),
 });
-const ProveedorForm = () => {
+const UserEditForm = () => {
+  const { state: data } = useLocation();
+  const [roles, setRoles] = useState([]);
+  useEffect(() => {
+    RutaApi.get("/roles").then((rol) => setRoles(rol.data[0]));
+  }, []);
+  console.log(data.usuid);
+  const initialValues = {
+    id: data.usuid,
+    nombre: data.nombre,
+    username: data.usuario,
+    rol: data.rol,
+  };
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    CrearProveedor(values);
+    console.log(values);
+    UpdateUsuario(values);
   };
   return (
     <Box m="20px">
-      <Header title="CREAR PROVEEDOR" subtitle="Crear un nuevo proveedor" />
+      <Header title="Editar Usuario" subtitle="Edicion de datos del usuario" />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -65,47 +72,31 @@ const ProveedorForm = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="number"
-                label="Telefono"
-                InputProps={{ inputProps: { min: 0 } }}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.telefono}
-                name="telefono"
-                error={!!touched.telefono && !!errors.telefono}
-                helperText={touched.telefono && errors.telefono}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="email"
-                label="Correo"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.correo}
-                name="correo"
-                error={!!touched.correo && !!errors.correo}
-                helperText={touched.correo && errors.correo}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
                 type="text"
-                label="Nota"
+                label="Email"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.notas}
-                name="notas"
-                error={!!touched.notas && !!errors.notas}
-                helperText={touched.notas && errors.notas}
+                value={values.username}
+                name="username"
+                error={!!touched.username && !!errors.username}
+                helperText={touched.username && errors.username}
                 sx={{ gridColumn: "span 2" }}
+              />
+              <Autocomplete
+                disablePortal
+                id="oRoles"
+                options={roles}
+                onChange={(event, value) => (values.rol = value.id)}
+                getOptionLabel={(opt) => opt.nombre}
+                sx={{ gridColumn: "span 4" }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Roles" />
+                )}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Crear Proveedor
+                Actualizar Usuario
               </Button>
             </Box>
           </form>
@@ -114,4 +105,4 @@ const ProveedorForm = () => {
     </Box>
   );
 };
-export default ProveedorForm;
+export default UserEditForm;

@@ -1,39 +1,44 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { createProducto } from "../../tools/productoReducer";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { CrearProducto } from "../../app/productoContext";
+import { useEffect, useState } from "react";
+import { RutaApi } from "../../api/url";
 const initialValues = {
   nombre: "",
   descripcion: "",
   sku: "",
   precio: "",
-  isActive: true,
+  almacenid: "",
+  proveedorid: "",
+  unidad: "",
 };
 
 const userSchema = yup.object().shape({
   nombre: yup.string().required("required"),
   descripcion: yup.string().required("required"),
   sku: yup.string().required("required"),
-  precio: yup.string().required("required"),
+  precio: yup.number().required("required"),
+  almacenid: yup.number().required("required"),
+  proveedorid: yup.number().required("required"),
+  unidad: yup.string().required("required"),
 });
 const ProductoForm = () => {
-   const oUsuarios = useSelector((state) => state.usuario);
-   const oNavegacion = useNavigate();
-   useEffect(() => {
-     if (!oUsuarios.user.isLoged) {
-       console.log("NO LOGEADO");
-       oNavegacion("/Login");
-     }
-   });
-  const oDispatch = useDispatch();
+  const [almacenes, setAlmacenes] = useState([]);
+  const [proveedores, setProveedores] = useState([]);
+  useEffect(() => {
+    RutaApi.get("/almacenes").then((almacen) => setAlmacenes(almacen.data[0]));
+  }, []);
+  useEffect(() => {
+    RutaApi.get("/proveedores").then((proveedor) =>
+      setProveedores(proveedor.data[0])
+    );
+  }, []);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    oDispatch(createProducto(values));
+    CrearProducto(values);
   };
   return (
     <Box m="20px">
@@ -77,19 +82,6 @@ const ProductoForm = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Descripcion"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.descripcion}
-                name="descripcion"
-                error={!!touched.descripcion && !!errors.descripcion}
-                helperText={touched.descripcion && errors.descripcion}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
                 label="SKU"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -103,6 +95,20 @@ const ProductoForm = () => {
                 fullWidth
                 variant="filled"
                 type="text"
+                label="Descripcion"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.descripcion}
+                name="descripcion"
+                error={!!touched.descripcion && !!errors.descripcion}
+                helperText={touched.descripcion && errors.descripcion}
+                sx={{ gridColumn: "span 4" }}
+              />
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
                 label="Precio"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -111,6 +117,41 @@ const ProductoForm = () => {
                 error={!!touched.precio && !!errors.precio}
                 helperText={touched.precio && errors.precio}
                 sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Unidad"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.unidad}
+                name="unidad"
+                error={!!touched.unidad && !!errors.unidad}
+                helperText={touched.unidad && errors.unidad}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <Autocomplete
+                disablePortal
+                id="oAlmacenes"
+                onChange={(event, value) => (values.almacenid = value.id)}
+                options={almacenes}
+                getOptionLabel={(opt) => opt.nombre}
+                sx={{ gridColumn: "span 2" }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Almacenes" />
+                )}
+              />
+              <Autocomplete
+                disablePortal
+                id="oProveedores"
+                onChange={(event, value) => (values.proveedorid = value.provid)}
+                options={proveedores}
+                getOptionLabel={(opt) => opt.provnombre}
+                sx={{ gridColumn: "span 2" }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Proveedores" />
+                )}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
