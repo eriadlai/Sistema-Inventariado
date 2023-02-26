@@ -90,3 +90,29 @@ export const EliminarUsuario = async (oID) => {
       });
     });
 };
+export const UpdateUsuario = async (oUsuario) => {
+  console.log(oUsuario);
+  const SetUsuario = {
+    oUsuarioId: oUsuario.id,
+    oRolId: oUsuario.rol,
+    oNombre: oUsuario.nombre,
+    oUsername: oUsuario.username,
+  };
+  RutaApi.put("/usuarios", SetUsuario)
+    .then((res) => {
+      MySwal.fire({
+        title: "Accion exitosa",
+        text: "El usuario ha sido actualizado con exito",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => window.location.replace("/TablaUsuarios"));
+    })
+    .catch((error) => {
+      MySwal.fire({
+        title: "Error",
+        text: "Ups, ha ocurrido un problema",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    });
+};

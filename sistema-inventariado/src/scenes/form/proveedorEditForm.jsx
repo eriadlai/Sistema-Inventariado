@@ -1,39 +1,36 @@
-import { Autocomplete, Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { UpdateUsuario } from "../../app/usuarioContext";
-import { useEffect, useState } from "react";
-import { RutaApi } from "../../api/url";
+import { UpdateProveedor } from "../../app/proveedorContext";
 import { useLocation } from "react-router-dom";
+
+const phoneRegExp =
+  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const userSchema = yup.object().shape({
   nombre: yup.string().required("required"),
-  username: yup.string().email("Invalid email").required("required"),
-  rol: yup.number().required("required"),
+  telefono: yup.number(phoneRegExp).required("required"),
+  correo: yup.string().email("Invalid Email").required("required"),
+  notas: yup.string().required("required"),
 });
-const UserEditForm = () => {
+const ProveedorEditForm = () => {
   const { state: data } = useLocation();
-  const [roles, setRoles] = useState([]);
-  useEffect(() => {
-    RutaApi.get("/roles").then((rol) => setRoles(rol.data[0]));
-  }, []);
-  console.log(data.usuid);
   const initialValues = {
-    id: data.usuid,
-    nombre: data.nombre,
-    username: data.usuario,
-    rol: data.rol,
+    id: data.provid,
+    nombre: data.provnombre,
+    telefono: data.provtelefono,
+    correo: data.provcorreo,
+    notas: data.provnotas,
   };
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    console.log(values);
-    UpdateUsuario(values);
+    UpdateProveedor(values);
   };
   return (
     <Box m="20px">
-      <Header title="Editar Usuario" subtitle="Edicion de datos del usuario" />
+      <Header title="CREAR PROVEEDOR" subtitle="Crear un nuevo proveedor" />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -72,31 +69,47 @@ const UserEditForm = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
-                label="Email"
+                type="number"
+                label="Telefono"
+                InputProps={{ inputProps: { min: 0 } }}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.username}
-                name="username"
-                error={!!touched.username && !!errors.username}
-                helperText={touched.username && errors.username}
+                value={values.telefono}
+                name="telefono"
+                error={!!touched.telefono && !!errors.telefono}
+                helperText={touched.telefono && errors.telefono}
                 sx={{ gridColumn: "span 2" }}
               />
-              <Autocomplete
-                disablePortal
-                id="oRoles"
-                options={roles}
-                onChange={(event, value) => (values.rol = value.id)}
-                getOptionLabel={(opt) => opt.nombre}
-                sx={{ gridColumn: "span 4" }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Roles" />
-                )}
+              <TextField
+                fullWidth
+                variant="filled"
+                type="email"
+                label="Correo"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.correo}
+                name="correo"
+                error={!!touched.correo && !!errors.correo}
+                helperText={touched.correo && errors.correo}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Nota"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.notas}
+                name="notas"
+                error={!!touched.notas && !!errors.notas}
+                helperText={touched.notas && errors.notas}
+                sx={{ gridColumn: "span 2" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Actualizar Usuario
+                Actualizar Proveedor
               </Button>
             </Box>
           </form>
@@ -105,4 +118,4 @@ const UserEditForm = () => {
     </Box>
   );
 };
-export default UserEditForm;
+export default ProveedorEditForm;

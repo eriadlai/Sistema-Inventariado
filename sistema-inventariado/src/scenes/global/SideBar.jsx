@@ -133,14 +133,14 @@ const Sidebar = () => {
             </Typography>
             <Item
               title="Tabla de Usuarios"
-              to="/team"
+              to="/TablaUsuarios"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Tabla Almacenes"
-              to="/contacts"
+              to="/TablaAlmacenes"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

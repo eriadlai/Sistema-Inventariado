@@ -57,3 +57,23 @@ export const UpdateProducto = async (oProducto) => {
     });
   }
 };
+export const EliminarProducto = async (oID) => {
+  RutaApi.put("/products/delete", { oProductoId: oID })
+    .then((res) => {
+      MySwal.fire({
+        title: "Accion exitosa",
+        text: "El registro ha sido eliminado con exito",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(function () {
+        window.location.reload();
+      });
+    })
+    .catch((error) => {
+      MySwal.fire({
+        title: "Error",
+        text: "No se pudo eliminar el componente: " + error,
+        icon: "error",
+      });
+    });
+};

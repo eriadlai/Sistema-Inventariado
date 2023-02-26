@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { RutaApi } from "../../api/url";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { EliminarProducto } from "../../app/productoContext";
 const TablaProductos = () => {
   const oIdAlmacen = useSelector((state) => state.almacen);
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const TablaProductos = () => {
   };
 
   const handleDelete = (id) => {
-    console.log(id);
+    EliminarProducto(id);
   };
   const columns = [
     { field: "prodid", headerName: "ID" },

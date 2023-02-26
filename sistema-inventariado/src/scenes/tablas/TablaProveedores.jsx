@@ -6,6 +6,7 @@ import { useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { RutaApi } from "../../api/url";
 import { useNavigate } from "react-router-dom";
+import { EliminarProveedor } from "../../app/proveedorContext";
 
 const TablaProveedores = () => {
   const navigate = useNavigate();
@@ -17,13 +18,12 @@ const TablaProveedores = () => {
       setProveedores(proveedor.data[0])
     );
   }, []);
-
   const handleEdit = (data) => {
     navigate("/EditProveedor", { state: data });
   };
 
   const handleDelete = (id) => {
-    console.log(id);
+    EliminarProveedor(id);
   };
   const columns = [
     { field: "provid", headerName: "ID", flex: 0.5 },
@@ -67,7 +67,7 @@ const TablaProveedores = () => {
               type="submit"
               color="warning"
               variant="contained"
-              onClick={() => handleDelete(cellValues.row.id)}
+              onClick={() => handleDelete(cellValues.row.provid)}
             >
               ELIMINAR
             </Button>

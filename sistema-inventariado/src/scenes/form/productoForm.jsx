@@ -38,8 +38,7 @@ const ProductoForm = () => {
   }, []);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    console.log(values);
-    //CrearProducto(values);
+    CrearProducto(values);
   };
   return (
     <Box m="20px">
@@ -83,19 +82,6 @@ const ProductoForm = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Descripcion"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.descripcion}
-                name="descripcion"
-                error={!!touched.descripcion && !!errors.descripcion}
-                helperText={touched.descripcion && errors.descripcion}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
                 label="SKU"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -109,6 +95,20 @@ const ProductoForm = () => {
                 fullWidth
                 variant="filled"
                 type="text"
+                label="Descripcion"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.descripcion}
+                name="descripcion"
+                error={!!touched.descripcion && !!errors.descripcion}
+                helperText={touched.descripcion && errors.descripcion}
+                sx={{ gridColumn: "span 4" }}
+              />
+
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
                 label="Precio"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -116,6 +116,19 @@ const ProductoForm = () => {
                 name="precio"
                 error={!!touched.precio && !!errors.precio}
                 helperText={touched.precio && errors.precio}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Unidad"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.unidad}
+                name="unidad"
+                error={!!touched.unidad && !!errors.unidad}
+                helperText={touched.unidad && errors.unidad}
                 sx={{ gridColumn: "span 2" }}
               />
               <Autocomplete

@@ -23,7 +23,7 @@ const TablaAlmacenes = () => {
     navigate("/TablaProductos", { state: id });
   };
   const handleEdit = (data) => {
-    navigate("/EditUsuario", { state: data });
+    navigate("/EditAlmacen", { state: data });
   };
 
   const handleDelete = (id) => {

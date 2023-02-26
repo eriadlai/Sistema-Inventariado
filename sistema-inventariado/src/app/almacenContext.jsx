@@ -49,3 +49,30 @@ export const EliminarAlmacen = async (oID) => {
       });
     });
 };
+export const UpdateAlmacen = async (oAlmacen) => {
+  try {
+    const SetAlmacenes = {
+      oAlmacenId: oAlmacen.id,
+      oNombre: oAlmacen.nombre,
+      oDomicilio: oAlmacen.domicilio,
+      oEstado: oAlmacen.estado,
+      oCiudad: oAlmacen.ciudad,
+      oPais: oAlmacen.pais,
+    };
+    await RutaApi.put("/almacenes", SetAlmacenes).then(
+      MySwal.fire({
+        title: "Almacen Actualizado",
+        text: "El Almacen ha sido actualizado con éxito",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => window.location.replace("/TablaAlmacenes"))
+    );
+  } catch (error) {
+    MySwal.fire({
+      title: "Error",
+      text: "Ups, ha ocurrido un problema",
+      icon: "error",
+      confirmButtonText: "OK",
+    });
+  }
+};

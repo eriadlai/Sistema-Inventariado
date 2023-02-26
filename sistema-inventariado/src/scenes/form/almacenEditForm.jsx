@@ -3,30 +3,34 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { useMediaQuery } from "@mui/material";
 import Header from "../../components/Header";
-import { CrearProveedor } from "../../app/proveedorContext";
-const initialValues = {
-  nombre: "",
-  telefono: "",
-  correo: "",
-  notas: "",
-};
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+import { UpdateAlmacen } from "../../app/almacenContext";
+import { useLocation } from "react-router-dom";
 
 const userSchema = yup.object().shape({
   nombre: yup.string().required("required"),
-  telefono: yup.number(phoneRegExp).required("required"),
-  correo: yup.string().email("Invalid Email").required("required"),
-  notas: yup.string().required("required"),
+  domicilio: yup.string().required("required"),
+  estado: yup.string().required("required"),
+  ciudad: yup.string().required("required"),
+  pais: yup.string().required("required"),
 });
-const ProveedorForm = () => {
+const AlmacenEditForm = () => {
+  const { state: data } = useLocation();
+  console.log(data);
+  const initialValues = {
+    id: data.id,
+    nombre: data.nombre,
+    domicilio: data.domicilio,
+    estado: data.estado,
+    ciudad: data.ciudad,
+    pais: data.pais,
+  };
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values) => {
-    CrearProveedor(values);
+    UpdateAlmacen(values);
   };
   return (
     <Box m="20px">
-      <Header title="CREAR PROVEEDOR" subtitle="Crear un nuevo proveedor" />
+      <Header title="EDITAR ALMACEN" subtitle="Modificar punto de almacen" />
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -65,47 +69,59 @@ const ProveedorForm = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="number"
-                label="Telefono"
-                InputProps={{ inputProps: { min: 0 } }}
+                type="text"
+                label="Domicilio"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.telefono}
-                name="telefono"
-                error={!!touched.telefono && !!errors.telefono}
-                helperText={touched.telefono && errors.telefono}
-                sx={{ gridColumn: "span 2" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="email"
-                label="Correo"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.correo}
-                name="correo"
-                error={!!touched.correo && !!errors.correo}
-                helperText={touched.correo && errors.correo}
+                value={values.domicilio}
+                name="domicilio"
+                error={!!touched.domicilio && !!errors.domicilio}
+                helperText={touched.domicilio && errors.domicilio}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
                 type="text"
-                label="Nota"
+                label="Estado"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.notas}
-                name="notas"
-                error={!!touched.notas && !!errors.notas}
-                helperText={touched.notas && errors.notas}
+                value={values.estado}
+                name="estado"
+                error={!!touched.estado && !!errors.estado}
+                helperText={touched.estado && errors.estado}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Ciudad"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.ciudad}
+                name="ciudad"
+                error={!!touched.ciudad && !!errors.ciudad}
+                helperText={touched.ciudad && errors.ciudad}
+                sx={{ gridColumn: "span 2" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="Pais"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.pais}
+                name="pais"
+                error={!!touched.pais && !!errors.pais}
+                helperText={touched.pais && errors.pais}
                 sx={{ gridColumn: "span 2" }}
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
-                Crear Proveedor
+                Actualizar Almacen
               </Button>
             </Box>
           </form>
@@ -114,4 +130,4 @@ const ProveedorForm = () => {
     </Box>
   );
 };
-export default ProveedorForm;
+export default AlmacenEditForm;
